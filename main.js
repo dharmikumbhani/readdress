@@ -1,5 +1,6 @@
 const AddressUtils = require('./AddressUtils.js')
 const Readdress = require('./ReAddress.js');
+const wordsArray = require('./words')
 
 const addressUtility = new AddressUtils();
 const address = addressUtility.generateRandomAddress();
