@@ -1,6 +1,13 @@
+const wordTable = require('./words');
 class Readdress {
 
     address = '';
+    scaledDownArray = [];
+    arrayParts = {
+        firstPart: [],
+        secondPart: [],
+        thirdPart: [],
+    }
     constructor(address){
         this.address = address;
         this.addresslength = address.length;      
@@ -48,7 +55,59 @@ class Readdress {
         for (let index = 0; index < array.length; index++) {
             reducedRangeUnicodeArray.push(array[index]-48);
         }
+        this.scaledDownArray = reducedRangeUnicodeArray;
         return reducedRangeUnicodeArray;
+    }
+    
+    // Split and Concat
+    splitAndConcat(){
+        const len = this.address.length;
+        // Divide unicode array into three parts
+            let split = this.scaledDownArray.length / 3;
+            let firstPart = this.scaledDownArray.slice(0, split);
+            let secondPart = this.scaledDownArray.slice(split, split*2);
+            let thirdPart = this.scaledDownArray.slice(split*2);
+
+            // this.arrayParts.firstPart = firstPart;
+            // this.arrayParts.secondPart = secondPart;
+            // this.arrayParts.thirdPart = thirdPart;
+
+            this.arrayParts.firstPart = this.concatDigits(firstPart);
+            this.arrayParts.secondPart = this.concatDigits(secondPart);
+            this.arrayParts.thirdPart = this.concatDigits(thirdPart);
+
+            console.log(JSON.stringify(this.arrayParts, null, 2));
+
+            // console.log(firstPart);
+            // console.log(secondPart);
+            // console.log(thirdPart);
+
+    }
+
+    concatDigits(arr) {
+        let result = '';
+        for(let i = 0; i < arr.length; i++){
+            result = result.concat(JSON.stringify(arr[i]));
+        }
+        return result;
+    }
+
+
+    // Map To WordTable 
+    mapToWordTable(){
+        let wordAddress = '';
+        console.log(wordTable.length);
+        const primeNumber = 370091;
+        const firstIndex = this.arrayParts.firstPart % primeNumber;
+        const secondIndex = this.arrayParts.secondPart % primeNumber;
+        const thirdIndex = this.arrayParts.thirdPart % primeNumber;
+        console.log('Indices: ', firstIndex, secondIndex, thirdIndex);
+        const firstWord = wordTable[firstIndex];
+        const secondWord = wordTable[secondIndex];
+        const thirdWord = wordTable[thirdIndex];
+        wordAddress = firstWord + '.' + secondWord + '.' + thirdWord;
+        console.log('Word Address: ', wordAddress);
+        return wordAddress;
     }
 }
 
@@ -81,6 +140,8 @@ module.exports = Readdress;
 // 48 to 122
 // 0 to 74
 
+// 511001061091049910711070719 % 4499969
+// 4479854
 
 
 /**

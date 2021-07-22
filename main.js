@@ -15,4 +15,6 @@ console.log(addressArray.length)
 console.log(readdress.convertToUnicodeString());
 console.log(readdress.convertToUnicodeArray());
 console.log(readdress.reducedRangeUnicodeArray());
+readdress.splitAndConcat();
+readdress.mapToWordTable();
 // console.log(parseInt('74747474747474747474'))
